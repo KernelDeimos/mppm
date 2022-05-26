@@ -38,6 +38,7 @@ const marshal_items = (group, fileList) => {
         group.jarMap[fileName] = o;
         group.jarList.push(fileName);
         group.modToJar[probablyModName] = o;
+        all.jarMap[fileName] = o;
     }
 };
 
@@ -58,12 +59,20 @@ for ( const source of sources ) {
     marshal_items(groups[name], list)
 }
 
+Object.defineProperty(all, 'jarList', {
+    get () {
+        return Object.keys(all.jarMap);
+    }
+})
 
-for ( let alexMod of groups.alex.jarList ) {
-    if ( ! groups.nic.jarMap.hasOwnProperty(alexMod) ) {
-        if ( groups['nic'].modToJar.hasOwnProperty(alexMod.split('-')[0]) ) {
-            console.log(`nic has a different version of ${alexMod}`)
-        } else
-        console.log(`nic doesn't have ${alexMod}`);
+for ( let jarName of all.jarList ) {
+    const doesNotHave = [];
+    for ( let groupKey in groups ) {
+        if ( ! groups[groupKey].jarMap.hasOwnProperty(jarName) ) {
+            doesNotHave.push(groupKey);
+        }
+    }
+    if ( doesNotHave.length > 0 ) {
+        console.log(`mod '${jarName}' is missing for: ${doesNotHave.join(', ')}`);
     }
 }
