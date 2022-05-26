@@ -43,14 +43,14 @@ const modlist = [];
 
 const main = async function () {
 
-    const mm = new ManifestManager();
-    await mm.load();
-
     const args = process.argv.slice(2);
     if ( args.length < 2 ) {
         console.error('Usage: node modlist_generator <clientModsDir> <serverModsDir> [<overlapModsDir>]');
         process.exit(1);
     }
+
+    const mm = new ManifestManager();
+    await mm.load();
 
     const config = {
         clientModsDir: path_.resolve(args[0]),
