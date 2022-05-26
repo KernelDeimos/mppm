@@ -75,6 +75,12 @@ Object.defineProperty(all, 'jarList', {
     }
 })
 
+const col = {
+    red: str => '\033[31;1m' + str + '\033[0m',
+    blue: str => '\033[36;1m' + str + '\033[0m',
+    yellow: str => '\033[33;1m' + str + '\033[0m',
+};
+
 for ( let jarName of all.jarList ) {
     const doesNotHave = [];
     const hasSimilar = [];
@@ -91,9 +97,12 @@ for ( let jarName of all.jarList ) {
         }
     }
     if ( doesNotHave.length > 0 ) {
-        console.log(`mod '${jarName}' is missing for: ${doesNotHave.join(', ')}`);
+        console.log(`mod ${col.red(jarName)} is missing for: ${doesNotHave.join(', ')}`);
         for ( let similar of hasSimilar ) {
-            console.log(` -- ${similar.groupKey} has ${similar.fileName}`)
+            console.log(` -- ${similar.groupKey} has ${col.blue(similar.fileName)}`)
         }
+    }
+    if ( ! jarName.endsWith('.jar') ) {
+        console.log(col.yellow(`NOTE: file does not end with .jar!`))
     }
 }
