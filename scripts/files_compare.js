@@ -30,11 +30,16 @@ const groups = {};
 const all = {};
 all.jarMap = {};
 
+const parse_jar_name = jarName => {
+    return {
+        probablyModName: jarName.split('-')[0]
+    };
+}
+
 const marshal_items = (group, fileList) => {
     for ( const fileName of fileList ) {
-        const parts = fileName.split('-');
-        const probablyModName = parts[0];
-        const o = {};
+        const probablyModName = parse_jar_name(fileName).probablyModName;
+        const o = { fileName };
         group.jarMap[fileName] = o;
         group.jarList.push(fileName);
         group.modToJar[probablyModName] = o;
@@ -67,12 +72,23 @@ Object.defineProperty(all, 'jarList', {
 
 for ( let jarName of all.jarList ) {
     const doesNotHave = [];
+    const hasSimilar = [];
     for ( let groupKey in groups ) {
         if ( ! groups[groupKey].jarMap.hasOwnProperty(jarName) ) {
             doesNotHave.push(groupKey);
+            const probablyModName = parse_jar_name(jarName).probablyModName;
+            if ( groups[groupKey].modToJar.hasOwnProperty(probablyModName) ) {
+                hasSimilar.push({
+                    groupKey,
+                    fileName: groups[groupKey].modToJar[probablyModName].fileName
+                });
+            }
         }
     }
     if ( doesNotHave.length > 0 ) {
         console.log(`mod '${jarName}' is missing for: ${doesNotHave.join(', ')}`);
+        for ( let similar of hasSimilar ) {
+            console.log(` -- ${similar.groupKey} has ${similar.fileName}`)
+        }
     }
 }
