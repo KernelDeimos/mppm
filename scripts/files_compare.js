@@ -21,6 +21,11 @@ const sourceTypes = {
     mppm: str => JSON.parse(str).modlist.map(v => v.file),
 };
 
+for ( const k of Object.keys(sourceTypes) ) {
+    const fn = sourceTypes[k];
+    sourceTypes[k] = str => fn(str).filter(v => v !== '');
+}
+
 // a = a.split('\n');
 // b = b.modlist.map(v => v.file);
 // c = c.split('\r\n').map(v => v.split(' ')[0]);
