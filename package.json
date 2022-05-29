@@ -1,0 +1,26 @@
+{
+  "name": "mppm",
+  "version": "1.0.0",
+  "description": "Mod-Packer's Package Manager",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KernelDeimos/mppm.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KernelDeimos/mppm/issues"
+  },
+  "homepage": "https://github.com/KernelDeimos/mppm#readme",
+  "dependencies": {
+    "archiver": "^5.3.1",
+    "ftp": "^0.3.10"
+  }
+}
