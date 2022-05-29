@@ -1,3 +1,4 @@
+const console = require('console');
 const fs = require('fs');
 const path_ = require('path');
 
@@ -18,7 +19,9 @@ const sources = process.argv.slice(2);
 const sourceTypes = {
     nix: str => str.split('\n'),
     win: str => str.split('\r\n').map(v => v.split(' ').slice(-1)[0]),
-    mppm: str => JSON.parse(str).modlist.map(v => v.file),
+    'mppm.client': str => JSON.parse(str).modlist.filter(v => v.client).map(v => v.file),
+    'mppm.server': str => JSON.parse(str).modlist.filter(v => v.server).map(v => v.file),
+    'mppm': str => JSON.parse(str).modlist.map(v => v.file),
 };
 
 for ( const k of Object.keys(sourceTypes) ) {
@@ -73,7 +76,7 @@ Object.defineProperty(all, 'jarList', {
     get () {
         return Object.keys(all.jarMap);
     }
-})
+});
 
 const col = {
     red: str => '\033[31;1m' + str + '\033[0m',
